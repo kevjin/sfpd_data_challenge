@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Faster+One" rel="stylesheet">
+    <link rel="stylesheet" href="/css/master.css">
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <script>console.log("where my js atss")</script>
+    <div class="header">
+      <h1 class="title">SFPD Emergency Calls<br> and Data</h1>
+    </div>
+
+    <!-- this div is only used to center the content -->
+    <div class="content-centering">
+
+      <!-- all the content should be in the div below -->
+        <div class="content">
+
+          <!-- display each data visualization in its own div -->
+          <div class="data_visuals">
+            <div class="name">Dispatch Time vs Emergency Type</div>
+            <img class="graphImage" src="emergency_vs_dispatch_time.png" alt="emergency_vs_dispatch_time.png">
+            <p class = "description">This graph describes the average dispatch time of different emergencies. What's notable is that the dispatch time for fire is significantly higher on average compared to dispatching for other types of emergencies. This is likely due to the fact that fire emergencies have to be handled differently compared to medical or police emergencies. To deploy a fire truck and team require a significant amount of resources which is why emergency dispatchers have to verify the magnitude and details about a fire which may take extra time. Other possibilities include inefficiencies in the way emergency call centers handle fire reports before calling the fire departments, or a lack of fire departments in the city to handle the number of fires happening in San Francisco.</p>
+          </div>
+
+          <div class="data_visuals">
+            <div class="name">Time of Each Emergency</div>
+            <img class="graphImage" src="average_time_of_emergency.png" alt="average_time_of_emergency.png">
+            <p class = "description">This graph describes the average time of each emergency. What's interesting is that the four kinds of emergencies are all pretty spread out across the day, averaging close to the afternoon. One could imagine how certain emergencies might have significant number of data points clumped towards the night time. Though, there is a slight skew in the average time of emergencies from the afternoon, showing that more emergencies do happen later in the day.<br>The average times of each emergency don't differ very much from one another. The largest time difference is between Non Life-Threatening and Alarm emergencies, but even then, 15 minutes doesnt seem significant when looking at a 24 hour day.</p>
+          </div>
+
+          <div class="data_visuals">
+              <div class="flex_horizontal">
+                <div class="flex_vertical">
+                <div class="name" id="align_this_center">Dispatch Time vs Zip Code</div>
+                <img class="graphImage" src="zipcode_vs_dispatch_time.png" alt="zipcode_vs_dispatch_time.png.png">
+                <p class = "description">This graph describes the average dispatch time against different zip codes in San Francisco. It's interesting that there are two particular zip codes with sigificantly higher dispatch times compared to the rest, which we explore in the <strong>Longest Dispatch Time</strong>.</p>
+              </div>
+              <!-- create a divider to separate these two related divs -->
+              <div id="border_space"> <div/>
+
+              <div class="zipcode_analysis">
+                <h1>Longest Dispatch Time</h1>
+                <p>There are two particular zip codes on this graph that have much higher dispatch times than the other zip codes. Zip code 94127 is near the City College of San Francisco and zip code 94105 is the next to the Bay. <br>We believe the reason why area 94105 has such a high dispatch time is because a large part of fire emergencies take place in that location, as depicted on the <strong>Fire Heat Map</strong> below. And based on our first graph, which maps Dispatch Time to Emergency Type, fire emergencies on average take 7 times longer to dispatch. <br> In order to reduce the average dispatch time in area 94105, San Francisco can take measures to reduce the numbers of fires in that region or reduce the average fire dispatch time. <br>Area 94127 doesn't have as many fires, but it also doesn't have many emergencies in the first place, as shown on the <strong>Emergencies Heat Map below</strong>. Even though the dot on the <strong>Fire Heat Map</strong> in Area 94127 seems relatively small, fires account for a significant portion of emergencies near the city college's campus.</p><br>
+                <div id="zipcodes_map"></div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+      <!-- machine learning -->
+      <div class="emergency_prediction_container">
+        <h1>Predict Emergency Dispatch Type</h1>
+        <p>We trained the dataset on Microsoft Azure's multiclass decision forest model. With it, we can roughly predict the type of emergency dispatch required given an address and time</p>
+        <br>
+
+        <!-- return false to disable form refresh upon submit button -->
+        <form onsubmit="return false">
+          Address: <input id = "formAddress" type="text" name="" value="" placeholder="1234 Oak Ridge St">
+          <br><br>
+          Hour: <input id = "formHour" type="text" name="" value="" placeholder="12">
+          &emsp;Minute: <input id="formMinute" type="text" name="" value="" placeholder="00">
+          AM: <input type="radio" name="AMorPM" value="AM">
+          PM: <input type="radio" name="AMorPM" value="PM">
+          <br>
+          <br>
+          <input type="submit" name="" value="Submit" onclick="azureDataRequested()">
+        </form>
+        <div id="prediction">
+          The type is emergency is most likely 
+          <span id="predicted_emergency_answer">_______</span>
+        </div>
+        </div>
+
+          <div class="data_visuals">
+            <div class="name">Emergencies Heat Map</div>
+            <iframe src="emergHeatMap.html" height="500px" width="500px"></iframe>
+          </div>
+
+          <div class="data_visuals">
+            <div class="name">Fire Heat Map</div>
+            <iframe src="fireHeatMap.html" height="500px" width="500px"></iframe>
+          </div>
+
+
+      </div>
+      </div>
+      <!-- client side scripts -->
+    <script src="/js/master.js"></script>
+
+    <!-- google maps api. The key is necessary for the API request as shown below based on reading this-->
+    <!-- https://stackoverflow.com/questions/1364858/what-steps-should-i-take-to-protect-my-google-maps-api-key -->
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQE1TsgvbMzcgxGvF268pMJPtrOr3jnoM&callback=initMap">
+    </script>
+  </body>
+</html>

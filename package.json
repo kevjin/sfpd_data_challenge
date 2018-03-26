@@ -1,0 +1,19 @@
+{
+  "name": "capone",
+  "version": "1.0.0",
+  "description": "capital one data challenge",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Kevin Jin",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "request": "^2.85.0",
+    "s": "^0.1.1"
+  }
+}
